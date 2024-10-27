@@ -4,16 +4,20 @@ const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port =process.env.PORT ; // You can change this to any port you prefer
+const port =process.env.PORT || 3200 ; // You can change this to any port you prefer
 
 // Middleware to parse JSON and URL-encoded form data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Create a route to handle sending emails
+app.get('/', async (req, res) => {
+  res.status(200).json({ message: 'server working' });
+
+})
 app.post('/send-email', async (req, res) => {
   try {
-    const { to, subject, text } = req.body;
+    const { from, subject, text } = req.body;
     const email = process.env.EMAIL_USER
     const password = process.env.EMAIL_PASSWORD
 
@@ -29,8 +33,8 @@ app.post('/send-email', async (req, res) => {
 
     // Email data
     const mailOptions = {
-      from: 'irtezach255@gmail.com',
-      to,
+      from,
+      to: 'mirchi.fi@gmail.com',
       subject,
       text,
     };
